@@ -14,9 +14,9 @@ from app.models import (
 from app.spacy_extractor import SpacyExtractor
 
 app = FastAPI(
-    title="spacy-server",
-    version="1.0",
-    description="Spacy Server",
+    title="zep-nlp-server",
+    version="0.1",
+    description="Zep NLP Server",
 )
 
 example_request = srsly.read_json("app/data/example_request.json")
