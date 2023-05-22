@@ -1,5 +1,6 @@
 .PHONY: all format lint test tests download-language-model coverage run run-dev docker-build docker-run
 
+CONTAINER_NAME := zep-nlp-server
 LANGUAGE_MODEL := en_core_web_sm
 
 all: download-language-model format lint test
@@ -11,10 +12,10 @@ run-dev:
 	poetry run uvicorn main:app --reload --log-level debug --port 8080
 
 docker-build:
-	DOCKER_BUILDKIT=1 docker build -t spacy-server .
+	DOCKER_BUILDKIT=1 docker build -t $(CONTAINER_NAME) .
 
 docker-run:
-	docker run -p 8080:8080 spacy-server
+	docker run -p 8080:8080 $(CONTAINER_NAME)
 
 download-language-model:
 	poetry run python -m spacy download $(LANGUAGE_MODEL)
