@@ -7,10 +7,7 @@ import srsly  # type: ignore
 from fastapi import Body, FastAPI
 from starlette.responses import RedirectResponse
 
-from app.models import (
-    RecordsRequest,
-    RecordsResponse,
-)
+from app.entity_models import Request, Response
 from app.spacy_extractor import SpacyExtractor
 
 app = FastAPI(
@@ -30,20 +27,8 @@ def docs_redirect():
     return RedirectResponse("/docs")
 
 
-@app.post("/entities", response_model=RecordsResponse, tags=["NER"])
-async def extract_entities(body: RecordsRequest = Body(..., example=example_request)):
+@app.post("/entities", response_model=Response, tags=["NER"])
+async def extract_entities(body: Request = Body(..., example=example_request)):
     """Extract Named Entities from a batch of Records."""
 
-    documents = []
-
-    for val in body.values:
-        documents.append({"id": val.recordId, "text": val.data.text})
-
-    entities_res = extractor.extract_entities(documents)
-
-    res = [
-        {"recordId": er["id"], "data": {"entities": er["entities"]}}
-        for er in entities_res
-    ]
-
-    return {"values": res}
+    return extractor.extract_entities(body.texts)

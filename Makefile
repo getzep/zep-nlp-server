@@ -30,7 +30,7 @@ format:
 	poetry run ruff --select I --fix  .
 
 lint:
-	poetry run mypy --exclude app/tests .
+	poetry run mypy .
 	poetry run black . --check
 	poetry run ruff .
 
