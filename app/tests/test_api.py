@@ -48,41 +48,41 @@ def test_api_ner():
     assert r.texts[1].uuid == request_data["texts"][1]["uuid"]
 
     assert r.texts[0].entities == [
-        {
-            "label": "ORG",
-            "matches": [{"end": 10, "start": 4, "text": "Google"}],
-            "name": "Google",
-        },
-        {
-            "label": "ORG",
-            "matches": [{"end": 93, "start": 88, "text": "Apple"}],
-            "name": "Apple",
-        },
-        {
-            "label": "PERSON",
-            "matches": [{"end": 100, "start": 96, "text": "Siri"}],
-            "name": "Siri",
-        },
-        {
-            "label": "ORG",
-            "matches": [{"end": 122, "start": 115, "text": "iPhones"}],
-            "name": "iPhones",
-        },
-        {
-            "label": "ORG",
-            "matches": [{"end": 134, "start": 128, "text": "Amazon"}],
-            "name": "Amazon",
-        },
-        {
-            "label": "ORG",
-            "matches": [{"end": 142, "start": 137, "text": "Alexa"}],
-            "name": "Alexa",
-        },
-        {
-            "label": "LOC",
-            "matches": [{"end": 179, "start": 175, "text": "Echo"}],
-            "name": "Echo",
-        },
+        Entity(
+            label="ORG",
+            matches=[Match(end=10, start=4, text="Google")],
+            name="Google",
+        ),
+        Entity(
+            label="ORG",
+            matches=[Match(end=93, start=88, text="Apple")],
+            name="Apple",
+        ),
+        Entity(
+            label="PERSON",
+            matches=[Match(end=100, start=96, text="Siri")],
+            name="Siri",
+        ),
+        Entity(
+            label="ORG",
+            matches=[Match(end=122, start=115, text="iPhones")],
+            name="iPhones",
+        ),
+        Entity(
+            label="ORG",
+            matches=[Match(end=134, start=128, text="Amazon")],
+            name="Amazon",
+        ),
+        Entity(
+            label="ORG",
+            matches=[Match(end=142, start=137, text="Alexa")],
+            name="Alexa",
+        ),
+        Entity(
+            label="LOC",
+            matches=[Match(end=179, start=175, text="Echo")],
+            name="Echo",
+        ),
     ]
 
     assert r.texts[1].entities == [
