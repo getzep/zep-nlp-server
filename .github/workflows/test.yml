@@ -1,4 +1,4 @@
-name: Tests
+name: test
 
 on:
   push:
@@ -30,4 +30,5 @@ jobs:
           poetry install
       - name: Run unit tests
         run: |
+          make download-language-model
           make test
