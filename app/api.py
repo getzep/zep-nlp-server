@@ -4,8 +4,8 @@
 
 import spacy
 import srsly  # type: ignore
-from fastapi import Body, FastAPI
-from starlette.responses import RedirectResponse
+from fastapi import Body, FastAPI, status
+from starlette.responses import PlainTextResponse, RedirectResponse
 
 from app.entity_models import Request, Response
 from app.spacy_extractor import SpacyExtractor
@@ -20,6 +20,11 @@ example_request = srsly.read_json("app/data/example_request.json")
 
 nlp = spacy.load("en_core_web_sm")
 extractor = SpacyExtractor(nlp)
+
+
+@app.get("/healthz", response_model=str, status_code=status.HTTP_200_OK)
+def health():
+    return PlainTextResponse(".")
 
 
 @app.get("/", include_in_schema=False)
