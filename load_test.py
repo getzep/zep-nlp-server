@@ -1,6 +1,7 @@
-from locust import HttpUser, task, between
-import uuid
 import json
+import uuid
+
+from locust import HttpUser, between, task
 
 
 class ApiUser(HttpUser):
@@ -8,7 +9,7 @@ class ApiUser(HttpUser):
 
     @task
     def post_entities(self):
-        headers = {'Content-Type': 'application/json'}
+        headers = {"Content-Type": "application/json"}
         data = {
             "texts": [
                 {
@@ -19,7 +20,7 @@ class ApiUser(HttpUser):
     Inc. had failed to pass a cybersecurity review. "I think you’re gonna see that 
     begin to thaw very shortly,” between the US and China, Biden said on Sunday 
     after a Group-of-Seven summit in Japan. He added that his administration was 
-    considering whether to lift sanctions on Chinese Defense Minister Li Shangfu."""
+    considering whether to lift sanctions on Chinese Defense Minister Li Shangfu.""",
                 }
             ]
         }
