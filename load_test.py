@@ -14,7 +14,8 @@ class ApiUser(HttpUser):
             "texts": [
                 {
                     "uuid": str(uuid.uuid4()),
-                    "text": """South Korea’s Kospi gained as much as 1%, on track for its sixth 
+                    "text": """
+    South Korea’s Kospi gained as much as 1%, on track for its sixth 
     daily advance. Samsung Electronics Co. and SK Hynix Inc. were among the biggest 
     contributors to the benchmark after China said their US rival Micron Technology 
     Inc. had failed to pass a cybersecurity review. "I think you’re gonna see that 
