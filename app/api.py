@@ -5,10 +5,13 @@
 import spacy
 import srsly  # type: ignore
 from fastapi import Body, FastAPI, status
+from fastapi.responses import ORJSONResponse
 from starlette.responses import PlainTextResponse, RedirectResponse
 
+from app.embedder import Embedder
+from app.embedding_models import Collection
+from app.entity_extractor import SpacyExtractor
 from app.entity_models import Request, Response
-from app.spacy_extractor import SpacyExtractor
 
 app = FastAPI(
     title="zep-nlp-server",
@@ -21,6 +24,8 @@ example_request = srsly.read_json("app/data/example_request.json")
 nlp = spacy.load("en_core_web_sm")
 extractor = SpacyExtractor(nlp)
 
+embedder = Embedder()
+
 
 @app.get("/healthz", response_model=str, status_code=status.HTTP_200_OK)
 def health():
@@ -32,8 +37,14 @@ def docs_redirect():
     return RedirectResponse("/docs")
 
 
-@app.post("/entities", response_model=Response, tags=["NER"])
+@app.post("/entities", response_model=Response)
 async def extract_entities(body: Request = Body(..., example=example_request)):
     """Extract Named Entities from a batch of Records."""
 
     return extractor.extract_entities(body.texts)
+
+
+@app.post("/embeddings", response_class=ORJSONResponse)
+async def embed_collection(collection: Collection):
+    """Embed a Collection of Documents."""
+    return ORJSONResponse(embedder.embed(collection))

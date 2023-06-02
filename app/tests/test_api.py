@@ -5,23 +5,24 @@
 from starlette.testclient import TestClient
 
 from app.api import app
+from app.embedding_models import Collection, Document
 from app.entity_models import Entity, Match, Response
+
+text1 = """But Google is starting from behind. The company made a late push
+into hardware, and Apple's Siri, available on iPhones, and Amazon's Alexa
+software, which runs on its Echo and Dot devices, have clear leads in
+consumer adoption."""
+text2 = """South Korea’s Kospi gained as much as 1%, on track for its sixth 
+daily advance. Samsung Electronics Co. and SK Hynix Inc. were among the biggest 
+contributors to the benchmark after China said their US rival Micron Technology 
+Inc. had failed to pass a cybersecurity review. "I think you’re gonna see that 
+begin to thaw very shortly,” between the US and China, Biden said on Sunday 
+after a Group-of-Seven summit in Japan. He added that his administration was 
+considering whether to lift sanctions on Chinese Defense Minister Li Shangfu."""
 
 
 def test_api_ner():
     client = TestClient(app)
-
-    text1 = """But Google is starting from behind. The company made a late push
-    into hardware, and Apple's Siri, available on iPhones, and Amazon's Alexa
-    software, which runs on its Echo and Dot devices, have clear leads in
-    consumer adoption."""
-    text2 = """South Korea’s Kospi gained as much as 1%, on track for its sixth 
-    daily advance. Samsung Electronics Co. and SK Hynix Inc. were among the biggest 
-    contributors to the benchmark after China said their US rival Micron Technology 
-    Inc. had failed to pass a cybersecurity review. "I think you’re gonna see that 
-    begin to thaw very shortly,” between the US and China, Biden said on Sunday 
-    after a Group-of-Seven summit in Japan. He added that his administration was 
-    considering whether to lift sanctions on Chinese Defense Minister Li Shangfu."""
 
     request_data = {
         "texts": [
@@ -164,3 +165,35 @@ def test_api_ner():
             name="Li Shangfu",
         ),
     ]
+
+
+def test_embedding():
+    client = TestClient(app)
+
+    request_data = {
+        "uuid": "87c397dc-aabd-483f-8811-0ad9ef01248e",
+        "documents": [
+            {
+                "uuid": "87c397dc-aabd-483f-8811-0ad9ef01248e",
+                "text": text1,
+                "language": "en",
+            },
+            {
+                "uuid": "52x23423-sdfd-2344-adfs-234sdvsdfsds",
+                "text": text2,
+                "language": "en",
+            },
+        ],
+    }
+
+    response = client.post("/embed", json=request_data)
+    assert response.status_code == 200
+
+    r = Collection(**response.json())
+    assert len(r.documents) == 2
+    d: Document
+    for d in r.documents:
+        assert(d.embedding is not None)
+        assert(len(d.embedding) == 384)
+        assert(d.uuid is not None)
+        assert(d.text is not None)
