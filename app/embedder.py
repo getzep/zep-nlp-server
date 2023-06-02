@@ -1,7 +1,7 @@
 from typing import List, cast
 
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer  # type: ignore
 
 from app.embedding_models import Collection, Document
 
