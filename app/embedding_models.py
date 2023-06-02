@@ -6,7 +6,6 @@ from pydantic_numpy import NDArrayFp32  # type: ignore
 
 @dataclass
 class Document:
-    uuid: str
     text: str
     embedding: Optional[NDArrayFp32] = None
     language: str = "en"
@@ -17,5 +16,4 @@ class Document:
 
 @dataclass
 class Collection:
-    uuid: str
     documents: List[Document]

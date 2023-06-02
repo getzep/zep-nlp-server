@@ -186,7 +186,7 @@ def test_embedding():
         ],
     }
 
-    response = client.post("/embeddings", json=request_data)
+    response = client.post("/embeddings/short", json=request_data)
     assert response.status_code == 200
 
     r = Collection(**response.json())
@@ -195,5 +195,4 @@ def test_embedding():
     for d in r.documents:
         assert d.embedding is not None
         assert d.embedding.shape[0] == 384
-        assert d.uuid is not None
         assert d.text is not None
