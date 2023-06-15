@@ -56,32 +56,32 @@ def test_api_ner():
         ),
         Entity(
             label="ORG",
-            matches=[Match(end=93, start=88, text="Apple")],
+            matches=[Match(end=89, start=84, text="Apple")],
             name="Apple",
         ),
         Entity(
             label="PERSON",
-            matches=[Match(end=100, start=96, text="Siri")],
+            matches=[Match(end=96, start=92, text="Siri")],
             name="Siri",
         ),
         Entity(
             label="ORG",
-            matches=[Match(end=122, start=115, text="iPhones")],
+            matches=[Match(end=118, start=111, text="iPhones")],
             name="iPhones",
         ),
         Entity(
             label="ORG",
-            matches=[Match(end=134, start=128, text="Amazon")],
+            matches=[Match(end=130, start=124, text="Amazon")],
             name="Amazon",
         ),
         Entity(
             label="ORG",
-            matches=[Match(end=142, start=137, text="Alexa")],
+            matches=[Match(end=138, start=133, text="Alexa")],
             name="Alexa",
         ),
         Entity(
             label="LOC",
-            matches=[Match(end=179, start=175, text="Echo")],
+            matches=[Match(end=171, start=167, text="Echo")],
             name="Echo",
         ),
     ]
@@ -103,65 +103,65 @@ def test_api_ner():
             name="Sixth",
         ),
         Entity(
-            label="DATE", matches=[Match(end=75, start=70, text="daily")], name="Daily"
+            label="DATE", matches=[Match(end=71, start=66, text="daily")], name="Daily"
         ),
         Entity(
             label="ORG",
-            matches=[Match(end=108, start=85, text="Samsung Electronics Co.")],
+            matches=[Match(end=104, start=81, text="Samsung Electronics Co.")],
             name="Samsung Electronics Co.",
         ),
         Entity(
             label="ORG",
-            matches=[Match(end=126, start=113, text="SK Hynix Inc.")],
+            matches=[Match(end=122, start=109, text="SK Hynix Inc.")],
             name="SK Hynix Inc.",
         ),
         Entity(
             label="GPE",
             matches=[
-                Match(end=196, start=191, text="China"),
-                Match(end=377, start=372, text="China"),
+                Match(end=188, start=183, text="China"),
+                Match(end=361, start=356, text="China"),
             ],
             name="China",
         ),
         Entity(
             label="GPE",
             matches=[
-                Match(end=210, start=208, text="US"),
-                Match(end=367, start=365, text="US"),
+                Match(end=202, start=200, text="US"),
+                Match(end=351, start=349, text="US"),
             ],
             name="US",
         ),
         Entity(
             label="ORG",
-            matches=[Match(end=244, start=217, text="Micron Technology \n    Inc.")],
-            name="Micron Technology \n    Inc.",
+            matches=[Match(end=232, start=209, text="Micron Technology \nInc.")],
+            name="Micron Technology \nInc.",
         ),
         Entity(
             label="PERSON",
-            matches=[Match(end=384, start=379, text="Biden")],
+            matches=[Match(end=368, start=363, text="Biden")],
             name="Biden",
         ),
         Entity(
             label="DATE",
-            matches=[Match(end=399, start=393, text="Sunday")],
+            matches=[Match(end=383, start=377, text="Sunday")],
             name="Sunday",
         ),
         Entity(
             label="CARDINAL",
-            matches=[Match(end=427, start=422, text="Seven")],
+            matches=[Match(end=407, start=402, text="Seven")],
             name="Seven",
         ),
         Entity(
-            label="GPE", matches=[Match(end=443, start=438, text="Japan")], name="Japan"
+            label="GPE", matches=[Match(end=423, start=418, text="Japan")], name="Japan"
         ),
         Entity(
             label="NORP",
-            matches=[Match(end=535, start=528, text="Chinese")],
+            matches=[Match(end=511, start=504, text="Chinese")],
             name="Chinese",
         ),
         Entity(
             label="PERSON",
-            matches=[Match(end=563, start=553, text="Li Shangfu")],
+            matches=[Match(end=539, start=529, text="Li Shangfu")],
             name="Li Shangfu",
         ),
     ]
