@@ -1,16 +1,19 @@
 [tool.poetry]
-name = "spacy-server"
-version = "0.1.0"
+name = "nlp-server"
+version = "0.2.0"
 description = "Originated from spacy-cookiecutter by Microsoft"
 authors = ["Daniel Chalef <131175+danielchalef@users.noreply.github.com>"]
 license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.10,<3.12"
 spacy = "^3.5.3"
 uvicorn = "^0.22.0"
-fastapi = "^0.95.2"
+fastapi = "^0.97.0"
+sentence-transformers = "^2.2.2"
+orjson = "^3.9.0"
+pydantic-numpy = "^2.2.1"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.3.0"
@@ -21,6 +24,28 @@ locust = "^2.15.1"
 httpx = "^0.24.1"
 python-dotenv = "^1.0.0"
 
+[[tool.poetry.dependencies.torch]]
+version = "^2.0.1"
+markers = "sys_platform == 'linux'"
+source = "torch"
+
+[[tool.poetry.dependencies.torch]]
+version = "^2.0.1"
+markers = "sys_platform == 'darwin'"
+source = "PyPI"
+
+[[tool.poetry.source]]
+name = "torch"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+plugins = ["pydantic.mypy"]

@@ -12,7 +12,7 @@ ENV \
     POETRY_NO_INTERACTION=1 \
     POETRY_CACHE_DIR=/tmp/poetry_cache
 
-RUN pip install poetry==1.4.2
+RUN pip install poetry==1.5.1
 WORKDIR /app
 
 COPY pyproject.toml poetry.lock ./

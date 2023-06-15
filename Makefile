@@ -37,3 +37,6 @@ lint:
 
 test:
 	poetry run pytest app/tests
+
+loadtest:
+	poetry run locust -f load_test.py --headless --run-time 60 -u 50 --host http://0.0.0.0:8080
