@@ -15,7 +15,7 @@ from app.entity_models import Request, Response
 
 app = FastAPI(
     title="zep-nlp-server",
-    version="0.1",
+    version="0.2",
     description="Zep NLP Server",
 )
 

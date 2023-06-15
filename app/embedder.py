@@ -5,7 +5,7 @@ from sentence_transformers import SentenceTransformer  # type: ignore
 
 from app.embedding_models import Collection, Document
 
-EMBEDDING_MODELS = {"short": "multi-qa-MiniLM-L6-cos-v1"}
+EMBEDDING_MODELS = {"short": "multi-qa-mpnet-base-dot-v1"}
 
 
 class Embedder:
