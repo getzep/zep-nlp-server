@@ -186,7 +186,7 @@ def test_embedding():
         ],
     }
 
-    response = client.post("/embeddings/short", json=request_data)
+    response = client.post("/embeddings", json=request_data)
     assert response.status_code == 200
 
     r = Collection(**response.json())

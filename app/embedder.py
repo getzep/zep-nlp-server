@@ -5,12 +5,12 @@ from sentence_transformers import SentenceTransformer  # type: ignore
 
 from app.embedding_models import Collection, Document
 
-EMBEDDING_MODELS = {"short": "multi-qa-mpnet-base-dot-v1"}
+EMBEDDING_MODELS = "multi-qa-mpnet-base-dot-v1"
 
 
 class Embedder:
-    def __init__(self, model_type: str = "short"):
-        self.model = SentenceTransformer(EMBEDDING_MODELS[model_type])
+    def __init__(self):
+        self.model = SentenceTransformer(EMBEDDING_MODELS)
 
     def _embed_collection(self, collection: Collection) -> List[np.ndarray]:
         embeddings = cast(

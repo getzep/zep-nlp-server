@@ -24,7 +24,7 @@ example_request = srsly.read_json("app/data/example_request.json")
 nlp = spacy.load("en_core_web_sm")
 extractor = SpacyExtractor(nlp)
 
-embedder_short = Embedder(model_type="short")
+embedder = Embedder()
 
 
 @app.get("/healthz", response_model=str, status_code=status.HTTP_200_OK)
@@ -44,7 +44,7 @@ async def extract_entities(body: Request = Body(..., example=example_request)):
     return extractor.extract_entities(body.texts)
 
 
-@app.post("/embeddings/short", response_class=ORJSONResponse)
+@app.post("/embeddings", response_class=ORJSONResponse)
 async def embed_collection(collection: Collection):
     """Embed a Collection of Documents."""
-    return ORJSONResponse(embedder_short.embed(collection))
+    return ORJSONResponse(embedder.embed(collection))
