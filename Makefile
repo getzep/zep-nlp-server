@@ -6,10 +6,10 @@ LANGUAGE_MODEL := en_core_web_sm
 all: download-language-model format lint test
 
 run:
-	poetry run python main.py
+	ENABLE_EMBEDDINGS=true poetry run python main.py
 
 run-dev:
-	poetry run uvicorn main:app --reload --log-level debug --port 8080
+	ENABLE_EMBEDDINGS=true poetry run uvicorn main:app --reload --log-level debug --port 8080
 
 docker-build:
 	DOCKER_BUILDKIT=1 docker build -t $(CONTAINER_NAME) .
@@ -36,7 +36,7 @@ lint:
 	poetry run ruff .
 
 test:
-	poetry run pytest app/tests
+	ENABLE_EMBEDDINGS=true poetry run pytest app/tests
 
 loadtest:
-	poetry run locust -f load_test.py --headless --run-time 60 -u 50 --host http://0.0.0.0:8080
+	ENABLE_EMBEDDINGS=true poetry run locust -f load_test.py --headless --run-time 60 -u 50 --host http://0.0.0.0:8080
