@@ -2,9 +2,11 @@
 # Licensed under the MIT License.
 # Heavy modified by Zep
 
+import os
+
 import spacy
 import srsly  # type: ignore
-from fastapi import Body, FastAPI, status
+from fastapi import Body, FastAPI, HTTPException, status
 from fastapi.responses import ORJSONResponse
 from starlette.responses import PlainTextResponse, RedirectResponse
 
@@ -12,6 +14,8 @@ from app.embedder import Embedder
 from app.embedding_models import Collection
 from app.entity_extractor import SpacyExtractor
 from app.entity_models import Request, Response
+
+ENABLE_EMBEDDINGS = os.getenv("ENABLE_EMBEDDINGS", "false").lower() == "true"
 
 app = FastAPI(
     title="zep-nlp-server",
@@ -24,7 +28,8 @@ example_request = srsly.read_json("app/data/example_request.json")
 nlp = spacy.load("en_core_web_sm")
 extractor = SpacyExtractor(nlp)
 
-embedder = Embedder()
+if ENABLE_EMBEDDINGS:
+    embedder = Embedder()
 
 
 @app.get("/healthz", response_model=str, status_code=status.HTTP_200_OK)
@@ -47,4 +52,7 @@ async def extract_entities(body: Request = Body(..., example=example_request)):
 @app.post("/embeddings", response_class=ORJSONResponse)
 async def embed_collection(collection: Collection):
     """Embed a Collection of Documents."""
-    return ORJSONResponse(embedder.embed(collection))
+    if ENABLE_EMBEDDINGS:
+        return ORJSONResponse(embedder.embed(collection))
+    else:
+        raise HTTPException(status_code=400, detail="Embeddings not enabled.")
