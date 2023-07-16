@@ -1,7 +1,3 @@
-# Copyright (c) Microsoft Corporation. All rights reserved.
-# Licensed under the MIT License.
-# Heavy modified by Zep
-
 from starlette.testclient import TestClient
 
 from app.api import app

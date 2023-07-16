@@ -8,11 +8,11 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"
-spacy = "^3.5.3"
-uvicorn = "^0.22.0"
-fastapi = "^0.97.0"
+spacy = "^3.6.0"
+uvicorn = "^0.23.0"
+fastapi = "^0.100.0"
 sentence-transformers = "^2.2.2"
-orjson = "^3.9.0"
+orjson = "^3.9.2"
 pydantic-numpy = "^2.2.1"
 
 [tool.poetry.group.dev.dependencies]

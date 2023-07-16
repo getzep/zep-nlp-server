@@ -43,7 +43,7 @@ def docs_redirect():
 
 
 @app.post("/entities", response_model=Response)
-async def extract_entities(body: Request = Body(..., example=example_request)):
+async def extract_entities(body: Request = Body(..., examples=example_request)):
     """Extract Named Entities from a batch of Records."""
 
     return extractor.extract_entities(body.texts)
