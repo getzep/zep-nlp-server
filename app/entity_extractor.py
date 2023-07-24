@@ -7,7 +7,7 @@ from typing import Dict, List
 import spacy.tokens.doc
 from spacy.language import Language
 
-from app.config import settings
+from app.config import log, settings
 from app.entity_models import (
     Entity,
     EntityMatch,
@@ -15,8 +15,6 @@ from app.entity_models import (
     EntityResponse,
     EntityResponseRecord,
 )
-
-from app.config import log
 
 
 class SpacyExtractor:

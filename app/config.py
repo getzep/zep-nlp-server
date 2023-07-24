@@ -1,8 +1,9 @@
 import logging
 from collections.abc import MutableMapping
+from enum import Enum
 from functools import lru_cache
 from typing import Any
-from enum import Enum
+
 import yaml
 from pydantic import BaseSettings
 

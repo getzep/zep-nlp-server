@@ -197,7 +197,7 @@ def parse_embedding_response(response):
 def test_message_embedding():
     client = TestClient(app)
 
-    response = client.post("/embeddings/messages", json=embedding_request_data)
+    response = client.post("/embeddings/message", json=embedding_request_data)
     assert response.status_code == 200
 
     parse_embedding_response(response)
@@ -206,7 +206,7 @@ def test_message_embedding():
 def test_document_embedding():
     client = TestClient(app)
 
-    response = client.post("/embeddings/documents", json=embedding_request_data)
+    response = client.post("/embeddings/document", json=embedding_request_data)
     assert response.status_code == 200
 
     parse_embedding_response(response)

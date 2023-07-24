@@ -50,7 +50,7 @@ def extract_entities(
     return extractor.extract_entities(entity_request.texts)
 
 
-@app.post("/embeddings/messages", response_class=ORJSONResponse)
+@app.post("/embeddings/message", response_class=ORJSONResponse)
 def embed_message_collection(
     collection: Collection, embedder: Embedder = Depends(get_embedder)
 ):
@@ -60,7 +60,7 @@ def embed_message_collection(
     )
 
 
-@app.post("/embeddings/documents", response_class=ORJSONResponse)
+@app.post("/embeddings/document", response_class=ORJSONResponse)
 def embed_document_collection(
     collection: Collection, embedder: Embedder = Depends(get_embedder)
 ):
