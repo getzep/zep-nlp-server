@@ -2,34 +2,27 @@
 # Licensed under the MIT License.
 # Heavy modified by Zep
 
-import os
-
-import spacy
-import srsly  # type: ignore
-from fastapi import Body, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, status
 from fastapi.responses import ORJSONResponse
 from starlette.responses import PlainTextResponse, RedirectResponse
 
-from app.embedder import Embedder
+from app.config import settings
+from app.embedder import Embedder, get_embedder
 from app.embedding_models import Collection
-from app.entity_extractor import SpacyExtractor
-from app.entity_models import Request, Response
-
-ENABLE_EMBEDDINGS = os.getenv("ENABLE_EMBEDDINGS", "false").lower() == "true"
+from app.entity_extractor import SpacyExtractor, get_extractor
+from app.entity_models import EntityRequest, EntityResponse
 
 app = FastAPI(
     title="zep-nlp-server",
-    version="0.2",
+    version="0.3",
     description="Zep NLP Server",
 )
 
-example_request = srsly.read_json("app/data/example_request.json")
 
-nlp = spacy.load("en_core_web_sm")
-extractor = SpacyExtractor(nlp)
-
-if ENABLE_EMBEDDINGS:
-    embedder = Embedder()
+@app.on_event("startup")
+def startup_event():
+    get_embedder()
+    get_extractor()
 
 
 @app.get("/healthz", response_model=str, status_code=status.HTTP_200_OK)
@@ -37,22 +30,41 @@ def health():
     return PlainTextResponse(".")
 
 
+@app.get("/config")
+def config():
+    """Get the current configuration."""
+    return settings.dict()
+
+
 @app.get("/", include_in_schema=False)
 def docs_redirect():
     return RedirectResponse("/docs")
 
 
-@app.post("/entities", response_model=Response)
-async def extract_entities(body: Request = Body(..., examples=example_request)):
+@app.post("/entities", response_model=EntityResponse)
+def extract_entities(
+    entity_request: EntityRequest,
+    extractor: SpacyExtractor = Depends(get_extractor),
+):
     """Extract Named Entities from a batch of Records."""
+    return extractor.extract_entities(entity_request.texts)
 
-    return extractor.extract_entities(body.texts)
 
-
-@app.post("/embeddings", response_class=ORJSONResponse)
-async def embed_collection(collection: Collection):
+@app.post("/embeddings/messages", response_class=ORJSONResponse)
+def embed_message_collection(
+    collection: Collection, embedder: Embedder = Depends(get_embedder)
+):
     """Embed a Collection of Documents."""
-    if ENABLE_EMBEDDINGS:
-        return ORJSONResponse(embedder.embed(collection))
-    else:
-        raise HTTPException(status_code=400, detail="Embeddings not enabled.")
+    return ORJSONResponse(
+        embedder.embed(collection, settings.embeddings_messages_model)
+    )
+
+
+@app.post("/embeddings/documents", response_class=ORJSONResponse)
+def embed_document_collection(
+    collection: Collection, embedder: Embedder = Depends(get_embedder)
+):
+    """Embed a Collection of Documents."""
+    return ORJSONResponse(
+        embedder.embed(collection, settings.embeddings_documents_model)
+    )

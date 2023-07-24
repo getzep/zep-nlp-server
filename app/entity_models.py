@@ -7,17 +7,17 @@ from typing import List
 from pydantic import BaseModel
 
 
-class RequestRecord(BaseModel):
+class EntityRequestRecord(BaseModel):
     uuid: str
     text: str
     language: str = "en"
 
 
-class Request(BaseModel):
-    texts: List[RequestRecord]
+class EntityRequest(BaseModel):
+    texts: List[EntityRequestRecord]
 
 
-class Match(BaseModel):
+class EntityMatch(BaseModel):
     end: int
     start: int
     text: str
@@ -25,14 +25,14 @@ class Match(BaseModel):
 
 class Entity(BaseModel):
     label: str
-    matches: List[Match]
+    matches: List[EntityMatch]
     name: str
 
 
-class ResponseRecord(BaseModel):
+class EntityResponseRecord(BaseModel):
     uuid: str
     entities: List[Entity]
 
 
-class Response(BaseModel):
-    texts: List[ResponseRecord]
+class EntityResponse(BaseModel):
+    texts: List[EntityResponseRecord]

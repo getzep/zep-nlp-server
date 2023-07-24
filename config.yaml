@@ -1,0 +1,15 @@
+log_level: info
+server:
+  port: 5557
+embeddings:
+  # Modifying the device to cuda requires a container with CUDA installed
+  # and torch with CUDA support
+  device: cpu
+  messages:
+    model: all-MiniLM-L6-v2
+  documents:
+    model: all-MiniLM-L6-v2
+    # This is the recommended, moderate-memory model for document embeddings
+#    model: multi-qa-mpnet-base-dot-v1
+nlp:
+  spacy_model: en_core_web_sm
