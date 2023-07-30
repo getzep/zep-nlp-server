@@ -1,6 +1,6 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
-# Heavy modified by Zep
+# Heavily modified by Zep
 
 from typing import List
 

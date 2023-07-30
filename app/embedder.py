@@ -1,3 +1,4 @@
+from datetime import datetime
 from functools import lru_cache
 from typing import Any, List, cast
 
@@ -45,11 +46,18 @@ class Embedder:
         if model is None:
             raise ValueError(f"Model {model_name} not found")
 
+        start_time = datetime.now()
+        log.debug(f"Embedding {len(collection.documents)} documents")
         embeddings = cast(
             List[np.ndarray],
             model.encode(
                 [doc.text for doc in collection.documents], convert_to_numpy=True
             ),
+        )
+        end_time = datetime.now()
+        log.debug(
+            f"Completed embedding of {len(collection.documents)} documents in"
+            f" {end_time - start_time}s"
         )
         return embeddings
 

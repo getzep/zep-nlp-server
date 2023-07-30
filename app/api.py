@@ -1,7 +1,3 @@
-# Copyright (c) Microsoft Corporation. All rights reserved.
-# Licensed under the MIT License.
-# Heavy modified by Zep
-
 from fastapi import Depends, FastAPI, status
 from fastapi.responses import ORJSONResponse
 from starlette.responses import PlainTextResponse, RedirectResponse
