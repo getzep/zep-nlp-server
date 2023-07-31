@@ -4,7 +4,6 @@ from enum import Enum
 from functools import lru_cache
 from typing import Any
 
-
 import yaml
 from pydantic import BaseSettings
 from pydantic.env_settings import SettingsSourceCallable
