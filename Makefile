@@ -1,15 +1,19 @@
 .PHONY: all format lint test tests download-language-model coverage run run-dev docker-build docker-run
 
-CONTAINER_NAME := zep-nlp-server
+CONTAINER_NAME := ghcr.io/getzep/zep-nlp-server:latest
 LANGUAGE_MODEL := en_core_web_sm
+PORT := 5557
 
 all: download-language-model format lint test
 
 run:
-	ENABLE_EMBEDDINGS=true poetry run python main.py
+	 poetry run python main.py
+
+run-gunicorn:
+	 poetry run gunicorn -w 2 -k uvicorn.workers.UvicornWorker main:app -b 0.0.0.0:$(PORT)
 
 run-dev:
-	ENABLE_EMBEDDINGS=true poetry run uvicorn main:app --reload --log-level debug --port 8080
+	 poetry run uvicorn main:app --reload --log-level debug --port $(PORT)
 
 docker-build:
 	DOCKER_BUILDKIT=1 docker build -t $(CONTAINER_NAME) .
@@ -31,12 +35,12 @@ format:
 	poetry run ruff --select I --fix  .
 
 lint:
-	poetry run mypy .
+	poetry run mypy . --check-untyped-defs
 	poetry run black . --check
 	poetry run ruff .
 
 test:
-	ENABLE_EMBEDDINGS=true poetry run pytest app/tests
+	 poetry run pytest app/tests
 
 loadtest:
-	ENABLE_EMBEDDINGS=true poetry run locust -f load_test.py --headless --run-time 60 -u 50 --host http://0.0.0.0:8080
+	 poetry run locust -f load_test.py --headless --run-time 60 -u 50 --host http://0.0.0.0:$(PORT)

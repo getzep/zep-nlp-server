@@ -1,13 +1,20 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
-# Heavy modified by Zep
-
+# Heavily modified by Zep
+from functools import lru_cache
 from typing import Dict, List
 
 import spacy.tokens.doc
 from spacy.language import Language
 
-from app.entity_models import Entity, Match, RequestRecord, Response, ResponseRecord
+from app.config import log, settings
+from app.entity_models import (
+    Entity,
+    EntityMatch,
+    EntityRequestRecord,
+    EntityResponse,
+    EntityResponseRecord,
+)
 
 
 class SpacyExtractor:
@@ -34,7 +41,7 @@ class SpacyExtractor:
         """
         return "-".join([s.lower() for s in text.split()])
 
-    def extract_entities(self, records: List[RequestRecord]) -> Response:
+    def extract_entities(self, records: List[EntityRequestRecord]) -> EntityResponse:
         """Apply the pre-trained model to a batch of records
 
         records (list[RequestRecord]): The list of RequestRecord each with an
@@ -46,7 +53,7 @@ class SpacyExtractor:
         ids = (r.uuid for r in records)
         texts = (r.text for r in records)
 
-        res: List[ResponseRecord] = []
+        res: List[EntityResponseRecord] = []
 
         spacy_doc: spacy.tokens.doc.Doc
         for doc_id, spacy_doc in zip(ids, self.nlp.pipe(texts)):
@@ -67,8 +74,22 @@ class SpacyExtractor:
                         name=ent_name, label=ent.label_, matches=[]
                     )
                 entities[ent_id].matches.append(
-                    Match(start=ent.start_char, end=ent.end_char, text=ent.text)
+                    EntityMatch(start=ent.start_char, end=ent.end_char, text=ent.text)
                 )
 
-            res.append(ResponseRecord(uuid=doc_id, entities=list(entities.values())))
-        return Response(texts=res)
+            res.append(
+                EntityResponseRecord(uuid=doc_id, entities=list(entities.values()))
+            )
+        return EntityResponse(texts=res)
+
+
+@lru_cache()
+def get_extractor() -> SpacyExtractor:
+    log.info(
+        f"Loading spacy model {settings.nlp_spacy_model}. If the model is not already"
+        " downloaded, this may take a while."
+    )
+    nlp = spacy.load(settings.nlp_spacy_model)
+    log.info(f"Loaded spacy model {settings.nlp_spacy_model}.")
+
+    return SpacyExtractor(nlp)

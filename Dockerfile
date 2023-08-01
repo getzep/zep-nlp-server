@@ -18,6 +18,7 @@ WORKDIR /app
 COPY pyproject.toml poetry.lock ./
 RUN poetry install --without dev --no-root && rm -rf $POETRY_CACHE_DIR
 
+# Download language model. Can be changed to a different model via config or env variable
 RUN poetry run python -m spacy download ${LANGUAGE_MODEL}
 
 FROM python:3.11.3-slim-bullseye as runtime
@@ -27,11 +28,9 @@ ENV VIRTUAL_ENV=/app/.venv \
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 COPY ./app /app/app
+COPY config.yaml /app
+COPY main.py /app
 
 WORKDIR /app
 
-ENTRYPOINT ["python", "-m", "uvicorn", "app.api:app", \
-            "--host", "0.0.0.0", \
-            "--port", "8080", \
-            "--log-level", "info" \
-           ]
+ENTRYPOINT ["python", "main.py"]

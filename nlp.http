@@ -1,0 +1,19 @@
+POST http://localhost:8080/embeddings
+Content-Type: application/json
+
+{
+  "documents": [
+    {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "text": "Text 1",
+      "language": ""
+    },
+    {
+      "uuid": "00000000-0000-0000-0000-000000000000",
+      "text": "Text 2",
+      "language": ""
+    }
+  ]
+}
+
+###
