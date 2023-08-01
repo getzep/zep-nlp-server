@@ -46,6 +46,20 @@ def extract_entities(
     return extractor.extract_entities(entity_request.texts)
 
 
+@app.post(
+    "/embeddings/message",
+    description="Retained for legacy v0.8.1 and prior support. Will deprecate soon.",
+    response_class=ORJSONResponse,
+)
+def embed_message_collection(
+    collection: Collection, embedder: Embedder = Depends(get_embedder)
+):
+    """Embed a Collection of Documents."""
+    return ORJSONResponse(
+        embedder.embed(collection, settings.embeddings_messages_model)
+    )
+
+
 @app.post("/embeddings/message", response_class=ORJSONResponse)
 def embed_message_collection(
     collection: Collection, embedder: Embedder = Depends(get_embedder)
