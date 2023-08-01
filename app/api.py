@@ -51,7 +51,7 @@ def extract_entities(
     description="Retained for legacy v0.8.1 and prior support. Will deprecate soon.",
     response_class=ORJSONResponse,
 )
-def embed_message_collection(
+def embed_message_collection_legacy(
     collection: Collection, embedder: Embedder = Depends(get_embedder)
 ):
     """Embed a Collection of Documents."""
