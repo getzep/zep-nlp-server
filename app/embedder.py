@@ -6,7 +6,7 @@ import numpy as np
 import torch
 from sentence_transformers import SentenceTransformer  # type: ignore
 
-from app.config import log, settings
+from app.config import ComputeDevices, log, settings
 from app.embedding_models import Collection, Document
 
 
@@ -15,12 +15,18 @@ class Embedder:
 
     def __init__(self):
         device = "cpu"
-        if settings.embeddings_device == "cuda":
+        if settings.embeddings_device == ComputeDevices.cuda:
             log.info("Configured for CUDA")
             if torch.cuda.is_available():
                 device = "cuda"
             else:
                 log.warning("Configured for CUDA but CUDA not available, using CPU")
+        elif settings.embeddings_device == ComputeDevices.mps:
+            log.info("Configured for MPS")
+            if torch.backends.mps.is_available():
+                device = "mps"
+            else:
+                log.warning("Configured for MPS but MPS not available, using CPU")
 
         required_models = [
             settings.embeddings_messages_model,

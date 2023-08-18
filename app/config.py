@@ -12,6 +12,7 @@ from pydantic.env_settings import SettingsSourceCallable
 class ComputeDevices(Enum):
     cpu = "cpu"
     cuda = "cuda"
+    mps = "mps"
 
 
 class Settings(BaseSettings):
