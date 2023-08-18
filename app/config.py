@@ -12,6 +12,7 @@ from pydantic.env_settings import SettingsSourceCallable
 class ComputeDevices(Enum):
     cpu = "cpu"
     cuda = "cuda"
+    mps = "mps"
 
 
 class Settings(BaseSettings):
@@ -20,6 +21,8 @@ class Settings(BaseSettings):
     log_app_name: str = "zep-nlp"
     server_port: int
     embeddings_device: ComputeDevices
+    embeddings_messages_enabled: bool
+    embeddings_documents_enabled: bool
     embeddings_messages_model: str
     embeddings_documents_model: str
     nlp_spacy_model: str

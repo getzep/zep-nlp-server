@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nlp-server"
-version = "0.3.0"
+version = "0.4.0"
 description = "Originated from spacy-cookiecutter by Microsoft"
 authors = ["Daniel Chalef <131175+danielchalef@users.noreply.github.com>"]
 license = "MIT"

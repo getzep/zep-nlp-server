@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 from fastapi import Depends, FastAPI, status
 from fastapi.responses import ORJSONResponse
 from starlette.responses import PlainTextResponse, RedirectResponse
@@ -16,24 +18,24 @@ app = FastAPI(
 
 
 @app.on_event("startup")
-def startup_event():
+def startup_event() -> None:
     get_embedder()
     get_extractor()
 
 
 @app.get("/healthz", response_model=str, status_code=status.HTTP_200_OK)
-def health():
+def health() -> PlainTextResponse:
     return PlainTextResponse(".")
 
 
 @app.get("/config")
-def config():
+def config() -> Dict[str, Any]:
     """Get the current configuration."""
     return settings.dict()
 
 
 @app.get("/", include_in_schema=False)
-def docs_redirect():
+def docs_redirect() -> RedirectResponse:
     return RedirectResponse("/docs")
 
 
@@ -41,30 +43,21 @@ def docs_redirect():
 def extract_entities(
     entity_request: EntityRequest,
     extractor: SpacyExtractor = Depends(get_extractor),
-):
+) -> EntityResponse:
     """Extract Named Entities from a batch of Records."""
     return extractor.extract_entities(entity_request.texts)
-
-
-@app.post(
-    "/embeddings/message",
-    description="Retained for legacy v0.8.1 and prior support. Will deprecate soon.",
-    response_class=ORJSONResponse,
-)
-def embed_message_collection_legacy(
-    collection: Collection, embedder: Embedder = Depends(get_embedder)
-):
-    """Embed a Collection of Documents."""
-    return ORJSONResponse(
-        embedder.embed(collection, settings.embeddings_messages_model)
-    )
 
 
 @app.post("/embeddings/message", response_class=ORJSONResponse)
 def embed_message_collection(
     collection: Collection, embedder: Embedder = Depends(get_embedder)
-):
+) -> ORJSONResponse:
     """Embed a Collection of Documents."""
+    if not settings.embeddings_messages_enabled:
+        return ORJSONResponse(
+            {"error": "Message embeddings are not enabled"}, status_code=400
+        )
+
     return ORJSONResponse(
         embedder.embed(collection, settings.embeddings_messages_model)
     )
@@ -73,8 +66,13 @@ def embed_message_collection(
 @app.post("/embeddings/document", response_class=ORJSONResponse)
 def embed_document_collection(
     collection: Collection, embedder: Embedder = Depends(get_embedder)
-):
+) -> ORJSONResponse:
     """Embed a Collection of Documents."""
+    if not settings.embeddings_documents_enabled:
+        return ORJSONResponse(
+            {"error": "Message embeddings are not enabled"}, status_code=400
+        )
+
     return ORJSONResponse(
         embedder.embed(collection, settings.embeddings_documents_model)
     )
