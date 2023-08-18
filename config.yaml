@@ -6,8 +6,10 @@ embeddings:
   # and torch with CUDA support
   device: cpu
   messages:
+    enabled: true
     model: all-MiniLM-L6-v2
   documents:
+    enabled: true
     model: all-MiniLM-L6-v2
     # This is the recommended, moderate-memory model for document embeddings
 #    model: multi-qa-mpnet-base-dot-v1

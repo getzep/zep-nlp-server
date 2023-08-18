@@ -28,10 +28,11 @@ class Embedder:
             else:
                 log.warning("Configured for MPS but MPS not available, using CPU")
 
-        required_models = [
-            settings.embeddings_messages_model,
-            settings.embeddings_documents_model,
-        ]
+        required_models: List[str] = []
+        if settings.embeddings_messages_enabled:
+            required_models.append(settings.embeddings_messages_model)
+        if settings.embeddings_documents_enabled:
+            required_models.append(settings.embeddings_documents_model)
 
         models: dict[str, Any] = {}
         for model_name in required_models:
