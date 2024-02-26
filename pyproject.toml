@@ -12,7 +12,7 @@ spacy = "^3.6.0"
 uvicorn = "^0.23.1"
 fastapi = "^0.100.1"
 sentence-transformers = "^2.2.2"
-orjson = "^3.9.2"
+orjson = "^3.9.15"
 pydantic-numpy = "^2.2.2"
 python-dotenv = "^1.0.0"
 
