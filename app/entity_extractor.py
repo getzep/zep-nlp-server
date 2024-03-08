@@ -89,6 +89,7 @@ def get_extractor() -> SpacyExtractor:
         f"Loading spacy model {settings.nlp_spacy_model}. If the model is not already"
         " downloaded, this may take a while."
     )
+    spacy.cli.download(settings.nlp_spacy_model)
     nlp = spacy.load(settings.nlp_spacy_model)
     log.info(f"Loaded spacy model {settings.nlp_spacy_model}.")
 
